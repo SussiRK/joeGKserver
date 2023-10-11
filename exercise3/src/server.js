@@ -1,4 +1,5 @@
 const express = require("express");
+const axios = require("axios");
 const bodyParser = require('body-parser');
 
 const app = express();
@@ -27,9 +28,20 @@ app.get("/home.js", (req,res) =>{
 })
 
 http.listen(port, host, () => {
-  console.log(`Socket.IO server running at http://${host}:${port}/`);
+  console.log(`Socket.IO server running at http://localhost:3000/`);
 });
 
+  app.get('/api', async (req, res) => {
+    try {
+      const apiURL = "https://api.open-meteo.com/v1/forecast?latitude=52.52&longitude=13.41&current_weather=true&hourly=temperature_2m,relativehumidity_2m,windspeed_10m";
+      const response = await axios.get(apiURL);
+      const temp = response.data.current_weather.temperature;
+      
+      res.status(200).json({ temp });
+    } catch (error) {
+      res.status(500).json({ error: "Error occurred" });
+    }
+  });
 
 io.on("connection", (socket) => {
   console.log("someone connected");
@@ -41,7 +53,3 @@ io.on("connection", (socket) => {
     io.emit("chat message", username + " joined the chat")
   });
 });
-// server = app.listen(port, () => {
-//   console.log(`Server open on port ${port}`);
-// });
- 
