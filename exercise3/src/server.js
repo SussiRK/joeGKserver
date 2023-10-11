@@ -28,7 +28,7 @@ app.get("/home.js", (req,res) =>{
 })
 
 http.listen(port, host, () => {
-  console.log(`Socket.IO server running at http://localhost:3000/`);
+  console.log(`Socket.IO server running at http://146.190.236.48/`);
 });
 
   app.get('/api', async (req, res) => {
